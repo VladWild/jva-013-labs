@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "6a4e0706-c15f-4134-bbdd-e68ec3c4c3e6",
+    "_postman_id": "c114bd27-be1d-4a1d-898d-66fcc01ab74b",
     "name": "013-jva-labs",
     "description": "Реквесты для проекта **jva-013-labs** для изучения **Spring Security**",
     "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
@@ -33,8 +33,8 @@
             "auth": {
               "type": "basic",
               "basic": {
-                "password": "password",
-                "username": "user"
+                "username": "user",
+                "password": "password"
               }
             },
             "method": "GET",
@@ -112,7 +112,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"id\":\"1010\",\n    \"name\":\"Google\"\n}",
+              "raw": "{\n    \"name\":\"Google\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -194,14 +194,14 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"id\":\"2010\",\n    \"amount\":1000\n}",
+              "raw": "{\n    \"amount\":1000\n}",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
             },
-            "url": "http://localhost:8090/company/1010/order"
+            "url": "http://localhost:8090/company/1001/order"
           },
           "response": []
         },
@@ -274,7 +274,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"id\":\"3010\",\n    \"login\":\"user10\",\n    \"password\":\"password\",\n    \"roles\":\n    [\n        \"user\", \n        \"manager\"\n    ]\n}",
+              "raw": "{\n    \"login\":\"user_new\",\n    \"password\":\"password\",\n    \"roles\":\n    [\n        \"user\", \n        \"manager\"\n    ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -299,7 +299,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"id\":\"3010\",\n    \"login\":\"user11\",\n    \"password\":\"password\",\n    \"roles\":\n    [\n        \"user\"\n    ]\n}",
+              "raw": "{\n    \"id\":\"3010\",\n    \"login\":\"user_rename\",\n    \"password\":\"password\",\n    \"roles\":\n    [\n        \"user\"\n    ]\n}",
               "options": {
                 "raw": {
                   "language": "json"

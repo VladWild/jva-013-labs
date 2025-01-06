@@ -1,9 +1,9 @@
 package com.luxoft.spingsecurity.service;
 
-import com.luxoft.spingsecurity.dto.CompanyDto;
 import com.luxoft.spingsecurity.dto.OrderDto;
-import com.luxoft.spingsecurity.dto.converters.CompanyDtoConverter;
 import com.luxoft.spingsecurity.dto.converters.OrderDtoConverter;
+import com.luxoft.spingsecurity.model.Company;
+import com.luxoft.spingsecurity.model.Order;
 import com.luxoft.spingsecurity.repository.CompanyRepository;
 import com.luxoft.spingsecurity.repository.OrderRepository;
 import com.luxoft.spingsecurity.repository.UserRepository;
@@ -13,79 +13,63 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
-    private final UserRepository userRepository;
     private final OrderRepository orderRepository;
-
-    private final CompanyDtoConverter companyDtoConverter;
-    private final OrderDtoConverter orderDtoConverter;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<CompanyDto> getAll() {
-        return companyRepository.findAll()
-                .stream()
-                .map(companyDtoConverter::toDto)
-                .collect(toList());
+    public List<Company> getAll() {
+        return companyRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public List<CompanyDto> getAllByUserId(long userId) {
+    public List<Company> getAllByUserId(long userId) {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User does not exist"));
-        return user.getCompanies().stream()
-                .map(companyDtoConverter::toDto)
-                .collect(toList());
+        return user.getCompanies();
     }
 
     @Transactional(readOnly = true)
-    public CompanyDto getById(long companyId) {
+    public Company getById(long companyId) {
         return companyRepository.findById(companyId)
-                .map(companyDtoConverter::toDto)
                 .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
     }
 
     @Transactional
-    public CompanyDto createCompany(CompanyDto newCompany, long userId) {
+    public Company createCompany(Company company, long userId) {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User does not exist"));
-        var company = companyDtoConverter.toDomain(newCompany);
-        var withId = companyRepository.save(company);
+        var companySave = companyRepository.save(company);
         user.getCompanies().add(company);
         userRepository.save(user);
-        return companyDtoConverter.toDto(withId);
+        return companySave;
     }
 
     @Transactional
-    public CompanyDto updateCompany(CompanyDto companyDto) {
-        var company = companyRepository.findById(companyDto.getId())
+    public Company updateCompany(long id, String name) {
+        var company = companyRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
-        var updated = companyDtoConverter.toDomain(companyDto, company);
-        var fromDb = companyRepository.save(updated);
-        return companyDtoConverter.toDto(fromDb);
+        company.setName(name);
+        return companyRepository.save(company);
     }
 
     @Transactional(readOnly = true)
-    public List<OrderDto> getCompanyOrders(long companyId) {
+    public List<Order> getCompanyOrders(long companyId) {
         var company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
-        return company.getOrders().stream()
-                .map(orderDtoConverter::toDto)
-                .collect(toList());
+        return company.getOrders();
     }
 
     @Transactional
-    public OrderDto createOrder(long companyId, OrderDto orderDto) {
+    public Order createOrder(long companyId, Order order) {
         var company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
-        var order = orderDtoConverter.toDomain(orderDto, company);
-        var withId = orderRepository.save(order);
-        return orderDtoConverter.toDto(withId);
+        order.setCustomer(company);
+        return orderRepository.save(order);
     }
 
     @Transactional

@@ -31,7 +31,7 @@ Authorization: Basic dXNlcjpwYXNzd29yZA==
 Content-Type: application/json
 
 {
-  "login": "new_user",
+  "login": "user_new",
   "password": "password",
   "roles": [
     "user"
@@ -45,8 +45,8 @@ Authorization: Basic dXNlcjpwYXNzd29yZA==
 Content-Type: application/json
 
 {
-  "id": 3001,
-  "login": "new_login",
+  "id": 3010,
+  "login": "user_rename",
   "password": "newpassword",
   "roles": [
     "user"

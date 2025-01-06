@@ -3,8 +3,8 @@ package com.luxoft.spingsecurity.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 public class CompanyDto {
 
     private long id;

@@ -11,7 +11,7 @@ curl -v -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' 'http://localhost:8090/co
 curl -v -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' http://localhost:8090/company/1002 | json_pp
 
 ### 5. Create company
-curl -v -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' -H 'Content-Type: application/json' 'http://localhost:8090/company?user-id=3001' -d '{"id":"1010","name":"Google"}' | json_pp
+curl -v -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' -H 'Content-Type: application/json' 'http://localhost:8090/company?user-id=3001' -d '{"name":"Google"}' | json_pp
 
 ### 6. Update company
 curl -v -X PUT -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' -H 'Content-Type: application/json' 'http://localhost:8090/company' -d '{"id":"1010","name":"Apple"}' | json_pp
@@ -20,7 +20,7 @@ curl -v -X PUT -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' -H 'Content-Type: 
 curl -v -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' http://localhost:8090/company/1001/order | json_pp
 
 ### 8. Create order from company
-curl -v -X POST -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' -H 'Content-Type: application/json' 'http://localhost:8090/company/1010/order' -d '{"id":"2010","amount":1000}' | json_pp
+curl -v -X POST -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' -H 'Content-Type: application/json' 'http://localhost:8090/company/1001/order' -d '{"amount":1000}' | json_pp
 
 ### 9. Delete company order
 curl -v -X DELETE -H 'Authorization: Basic dXNlcjpwYXNzd29yZA==' 'http://localhost:8090/company/1010/order/2010' | json_pp
