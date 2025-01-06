@@ -1,0 +1,9 @@
+### Get info
+
+GET http://localhost:8090/info
+
+> {%
+client.test('Response status should be 200 with header', function () {
+    client.assert(response.status === 200, 'Response status is not 200')
+})
+%}
