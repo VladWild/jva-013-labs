@@ -1,0 +1,2 @@
+### 1. Get info
+curl -v http://localhost:8090/info | json_pp

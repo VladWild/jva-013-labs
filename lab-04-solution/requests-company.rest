@@ -1,0 +1,51 @@
+### All companies without user
+
+GET http://localhost:8090/company
+
+### Specific user's company
+
+GET http://localhost:8090/company?user-id=3001
+
+### Get company by id
+
+GET http://localhost:8090/company/1001
+
+### Create Company
+
+POST http://localhost:8090/company?user-id=3001
+Content-Type: application/json
+
+{
+  "name": "Amazon"
+}
+
+### Update company
+
+PUT http://localhost:8090/company
+Content-Type: application/json
+
+{
+  "id": 1001,
+  "name": "DXC"
+}
+
+### Get company orders
+
+GET http://localhost:8090/company/1001/order
+
+### Create order from company
+
+POST http://localhost:8090/company/1001/order
+Content-Type: application/json
+
+{
+  "amount": 10000.0
+}
+
+### Delete company's order
+
+DELETE http://localhost:8090/company/1001/order/2001
+
+### Any public info
+
+GET http://localhost:8090/info

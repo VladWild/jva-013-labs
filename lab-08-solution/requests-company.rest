@@ -1,0 +1,13 @@
+### All companies from user1
+
+# dXNlcjE6cGFzc3dvcmQ= means Base64(user1:password)
+
+GET http://localhost:8090/company
+Authorization: Basic dXNlcjE6cGFzc3dvcmQ=
+
+### All companies from admin
+
+# YWRtaW46cGFzc3dvcmQ= is Base64(admin:password)
+
+GET http://localhost:8090/company
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=

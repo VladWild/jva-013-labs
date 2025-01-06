@@ -1,0 +1,41 @@
+
+### get token key from server
+
+GET http://localhost:8500/uaa/oauth/token_key
+
+### Get token for card service
+
+POST http://localhost:8500/uaa/oauth/token?grant_type=password&username=card&password=card
+Authorization: Basic client secret
+
+> {%
+ client.global.set("card_token", response.body.access_token);
+ %}
+
+### Use token to generate a card number
+
+GET http://localhost:8080/create
+Authorization: Bearer {{card_token}}
+
+### USING authorization_code flow
+
+GET http://localhost:8500/uaa/oauth/authorize?response_type=code&client_id=client&scope=read&state=3252342
+
+###
+
+POST http://localhost:8500/uaa/oauth/token?grant_type=authorization_code&scope=read&code=kM9nNd
+Authorization: Basic client secret
+
+> {%
+ client.global.set("card_token", response.body.access_token);
+ %}
+
+### Use token to generate a card number
+
+GET http://localhost:8080/create
+Authorization: Bearer {{card_token}}
+
+### Using a client-auth (first time need to be run in a browser)
+
+GET http://localhost:8090/card
+

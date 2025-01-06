@@ -1,0 +1,38 @@
+### All users
+
+GET http://localhost:8090/user
+
+### Get user by id
+
+GET http://localhost:8090/user/3001
+
+### Get current user
+
+GET http://localhost:8090/user/whoami
+
+### Create user
+
+POST http://localhost:8090/user
+Content-Type: application/json
+
+{
+  "login": "new_user",
+  "password": "password",
+  "roles": [
+    "user"
+  ]
+}
+
+### Update user
+
+PUT http://localhost:8090/user
+Content-Type: application/json
+
+{
+  "id": 3001,
+  "login": "new_login",
+  "password": "newpassword",
+  "roles": [
+    "user"
+  ]
+}

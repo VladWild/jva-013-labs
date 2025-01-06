@@ -1,0 +1,61 @@
+### All companies without user
+
+# YWRtaW46cGFzc3dvcmQ= is Base64(admin:password)
+
+GET http://localhost:8090/company
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+
+### Specific user's company
+
+GET http://localhost:8090/company?user-id=1001
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+
+### Get company by id
+
+GET http://localhost:8090/company/1001
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+
+### Create Company
+
+POST http://localhost:8090/company?user-id=1001
+Content-Type: application/json
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+
+{
+  "name": "Amazon"
+}
+
+### Update company
+
+PUT http://localhost:8090/company
+Content-Type: application/json
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+
+{
+  "id": 1001,
+  "name": "DXC"
+}
+
+### Get company orders
+
+GET http://localhost:8090/company/1001/order
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+
+### Create order from company
+
+POST http://localhost:8090/company/1001/order
+Content-Type: application/json
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+
+{
+  "amount": 10000.0
+}
+
+### Delete company's order
+
+DELETE http://localhost:8090/company/1001/order/2001
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+
+### Any public info
+
+GET http://localhost:8090/info

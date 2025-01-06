@@ -1,0 +1,10 @@
+server.port: 8090
+
+spring:
+  datasource:
+    url: "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+  security:
+    # This replaces auto-generated password for testing purposes
+    user:
+      name: user
+      password: password

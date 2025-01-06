@@ -1,0 +1,4 @@
+server.port: 8500
+server.servlet.context-path: /uaa
+spring.h2.console.enabled: true
+spring.datasource.url: jdbc:h2:file:./auth_db

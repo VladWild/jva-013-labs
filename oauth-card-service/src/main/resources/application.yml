@@ -1,0 +1,27 @@
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+#          oauth-server-authorization-code:
+#            provider: oauth-server
+#            client-id: client
+#            client-secret: secret
+#            authorization-grant-type: authorization_code
+#            redirect-uri: http://localhost:8090/auth
+#            scope: read, write
+          ergrefre:
+            provider: edcs
+            client-id: client
+#            client-secret: secret
+            authorization-grant-type: password
+#            scope: read, write
+        provider:
+          edcs:
+            token-uri: http://localhost:8500/uaa/oauth/token
+            authorization-uri: http://localhost:8500/uaa/oauth/authorize
+      resourceserver:
+        jwt:
+          public-key-location: classpath:public.key
+#          jwk-set-uri: http://localhost:8500/uaa/.well-known/jwks.json
