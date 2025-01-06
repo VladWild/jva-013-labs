@@ -14,7 +14,7 @@ values (2001, 10.00, 1001),
        (2006, 100.00, 1003);
 
 -- Users
-insert into user(id, login, password)
+insert into users(id, login, password)
 values (3001, 'user1', 'password'),
        (3002, 'user2', 'password'),
        (3003, 'admin', 'password');

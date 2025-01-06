@@ -1,7 +1,6 @@
 package com.luxoft.spingsecurity.service;
 
-import com.luxoft.spingsecurity.dto.UserDto;
-import com.luxoft.spingsecurity.dto.converters.UserDtoConverter;
+import com.luxoft.spingsecurity.model.User;
 import com.luxoft.spingsecurity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,42 +8,35 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserDtoConverter userDtoConverter;
 
     @Transactional(readOnly = true)
-    public List<UserDto> getAll() {
-        return userRepository.findAll().stream()
-            .map(userDtoConverter::toDto)
-            .collect(toList());
+    public List<User> getAll() {
+        return userRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public UserDto getById(long userId) {
+    public User getById(long userId) {
         return userRepository.findById(userId)
-            .map(userDtoConverter::toDto)
             .orElseThrow(() -> new IllegalArgumentException("User does not exist"));
     }
 
     @Transactional
-    public UserDto create(UserDto userDto) {
-        var user = userDtoConverter.toDomain(userDto);
-        var withId = userRepository.save(user);
-        return userDtoConverter.toDto(withId);
+    public User create(User user) {
+        return userRepository.save(user);
     }
 
     @Transactional
-    public UserDto update(UserDto userDto) {
-        var user = userRepository.findById(userDto.getId())
+    public User update(User user) {
+        var userDataBase = userRepository.findById(user.getId())
             .orElseThrow(() -> new IllegalArgumentException("User does not exist"));
-        var updated = userDtoConverter.toDomain(userDto, user);
-        var fromDb = userRepository.save(updated);
-        return userDtoConverter.toDto(fromDb);
+        userDataBase.setLogin(user.getLogin());
+        userDataBase.setPassword(user.getPassword());
+        userDataBase.setRoles(user.getRoles());
+        return userRepository.save(userDataBase);
     }
 }

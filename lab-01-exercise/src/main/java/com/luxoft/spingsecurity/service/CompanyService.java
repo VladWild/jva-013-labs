@@ -28,31 +28,32 @@ public class CompanyService {
 
     @Transactional(readOnly = true)
     public List<CompanyDto> getAll() {
-        return companyRepository.findAll().stream()
-            .map(companyDtoConverter::toDto)
-            .collect(toList());
+        return companyRepository.findAll()
+                .stream()
+                .map(companyDtoConverter::toDto)
+                .collect(toList());
     }
 
     @Transactional(readOnly = true)
     public List<CompanyDto> getAllByUserId(long userId) {
         var user = userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalArgumentException("User does not exist"));
+                .orElseThrow(() -> new IllegalArgumentException("User does not exist"));
         return user.getCompanies().stream()
-            .map(companyDtoConverter::toDto)
-            .collect(toList());
+                .map(companyDtoConverter::toDto)
+                .collect(toList());
     }
 
     @Transactional(readOnly = true)
     public CompanyDto getById(long companyId) {
         return companyRepository.findById(companyId)
-            .map(companyDtoConverter::toDto)
-            .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
+                .map(companyDtoConverter::toDto)
+                .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
     }
 
     @Transactional
     public CompanyDto createCompany(CompanyDto newCompany, long userId) {
         var user = userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalArgumentException("User does not exist"));
+                .orElseThrow(() -> new IllegalArgumentException("User does not exist"));
         var company = companyDtoConverter.toDomain(newCompany);
         var withId = companyRepository.save(company);
         user.getCompanies().add(company);
@@ -63,7 +64,7 @@ public class CompanyService {
     @Transactional
     public CompanyDto updateCompany(CompanyDto companyDto) {
         var company = companyRepository.findById(companyDto.getId())
-            .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
+                .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
         var updated = companyDtoConverter.toDomain(companyDto, company);
         var fromDb = companyRepository.save(updated);
         return companyDtoConverter.toDto(fromDb);
@@ -72,16 +73,16 @@ public class CompanyService {
     @Transactional(readOnly = true)
     public List<OrderDto> getCompanyOrders(long companyId) {
         var company = companyRepository.findById(companyId)
-            .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
+                .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
         return company.getOrders().stream()
-            .map(orderDtoConverter::toDto)
-            .collect(toList());
+                .map(orderDtoConverter::toDto)
+                .collect(toList());
     }
 
     @Transactional
     public OrderDto createOrder(long companyId, OrderDto orderDto) {
         var company = companyRepository.findById(companyId)
-            .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
+                .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
         var order = orderDtoConverter.toDomain(orderDto, company);
         var withId = orderRepository.save(order);
         return orderDtoConverter.toDto(withId);

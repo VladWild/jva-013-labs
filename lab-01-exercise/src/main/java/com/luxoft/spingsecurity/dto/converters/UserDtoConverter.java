@@ -19,11 +19,4 @@ public class UserDtoConverter {
         user.setRoles(dto.getRoles());
         return user;
     }
-
-    public User toDomain(UserDto dto, User original) {
-        original.setLogin(dto.getLogin());
-        original.setPassword(dto.getPassword());
-        original.setRoles(dto.getRoles());
-        return original;
-    }
 }

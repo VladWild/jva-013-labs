@@ -1,32 +1,51 @@
 package com.luxoft.spingsecurity.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+@Entity
 @SequenceGenerator(
     name = "order_seq_gen",
     sequenceName = "order_seq",
     initialValue = 2010
 )
-@Entity
-@Data
 @Table(name = "orders")
 public class Order {
 
-    @EqualsAndHashCode.Include
-    @GeneratedValue(generator = "order_seq_gen")
-    @Id
     private long id;
-
     private double amount;
+    private Company customer;
+
+    @Id
+    @GeneratedValue(generator = "order_seq_gen")
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Column
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 
     @ManyToOne
-    private Company customer;
+    public Company getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Company customer) {
+        this.customer = customer;
+    }
 }
