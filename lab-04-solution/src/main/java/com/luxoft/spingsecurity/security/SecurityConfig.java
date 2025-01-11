@@ -31,15 +31,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sm ->
-                        sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(withDefaults())
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("/company/**", "/user/**").authenticated()
                                 .requestMatchers("/info").permitAll()
                                 .requestMatchers("/**").denyAll()
                 )
-                .httpBasic(withDefaults())
+                .formLogin(withDefaults())
                 .build();
     }
 
