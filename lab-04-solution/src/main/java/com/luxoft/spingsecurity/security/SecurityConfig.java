@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -42,7 +43,12 @@ public class SecurityConfig {
                         fl.loginPage("/login")
                                 .loginProcessingUrl("/login")
                                 .failureUrl("/deny.html")
-                                .defaultSuccessUrl("/company", true))
+                                .defaultSuccessUrl("/company", true)
+                )
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/login")
+                )
                 .build();
     }
 
