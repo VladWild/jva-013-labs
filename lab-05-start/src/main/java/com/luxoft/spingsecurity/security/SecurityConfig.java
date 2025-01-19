@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -30,23 +29,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(withDefaults())
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/login", "/deny.html", "/logout").permitAll()
+                                .requestMatchers("/login.html", "/login", "/deny.html").permitAll()
                                 .requestMatchers("/company/**", "/user/**").authenticated()
                                 .requestMatchers("/info").permitAll()
                                 .requestMatchers("/**").denyAll()
                 )
                 .formLogin(fl ->
-                        fl.loginPage("/login")
+                        fl.loginPage("/login.html")
                                 .loginProcessingUrl("/login")
                                 .failureUrl("/deny.html")
                                 .defaultSuccessUrl("/company", true)
-                )
-                .logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/login")
                 )
                 .build();
     }
