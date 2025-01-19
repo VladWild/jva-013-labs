@@ -51,4 +51,9 @@ public class UserController {
         User userUpdate = userService.update(user);
         return userDtoConverter.toDto(userUpdate);
     }
+
+    @GetMapping("/user/whoami")
+    public UserDto whoAmI() {
+        return userDtoConverter.toDto(userService.getCurrentUser());
+    }
 }

@@ -2,6 +2,7 @@ package com.luxoft.spingsecurity.service;
 
 import com.luxoft.spingsecurity.model.User;
 import com.luxoft.spingsecurity.repository.UserRepository;
+import com.luxoft.spingsecurity.security.CurrentUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final CurrentUserService currentUserService;
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
@@ -38,5 +40,10 @@ public class UserService {
         userDataBase.setPassword(user.getPassword());
         userDataBase.setRoles(user.getRoles());
         return userRepository.save(userDataBase);
+    }
+
+    @Transactional(readOnly = true)
+    public User getCurrentUser() {
+        return currentUserService.getCurrentUser();
     }
 }
