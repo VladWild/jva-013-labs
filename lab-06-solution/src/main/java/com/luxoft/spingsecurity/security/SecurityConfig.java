@@ -9,10 +9,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.sql.DataSource;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -22,6 +25,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
+    private final DataSource dataSource;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -43,7 +47,14 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/login")
+                )
+                .rememberMe(
+                        rm -> rm
+                                .key("my-secret")
+                                .alwaysRemember(true)
+                                /*.tokenValiditySeconds(3600)
+                                .rememberMeCookieName("myCookieName")*/
+                                .tokenRepository(persistentTokenRepository())
                 )
                 .build();
     }
@@ -54,5 +65,12 @@ public class SecurityConfig {
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return authenticationProvider;
+    }
+
+    private PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        tokenRepository.setCreateTableOnStartup(false);
+        return tokenRepository;
     }
 }
