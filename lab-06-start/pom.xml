@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>com.luxoft</groupId>
-    <artifactId>lab-06-solution</artifactId>
+    <artifactId>lab-06-start</artifactId>
     <version>1.0</version>
 
     <properties>
