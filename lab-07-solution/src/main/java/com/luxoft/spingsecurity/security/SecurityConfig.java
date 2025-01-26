@@ -9,11 +9,15 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
+
+    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl) {
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
+    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -32,7 +36,9 @@ public class SecurityConfig {
                                 .requestMatchers("/info").permitAll()
                                 .requestMatchers("/**").denyAll()
                 )
-                .httpBasic(withDefaults())
+                .x509(x509 ->
+                        x509.userDetailsService(userDetailsServiceImpl)
+                )
                 .build();
     }
 }
