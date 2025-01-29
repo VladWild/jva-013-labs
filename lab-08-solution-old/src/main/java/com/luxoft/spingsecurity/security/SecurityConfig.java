@@ -1,6 +1,7 @@
 package com.luxoft.spingsecurity.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -9,12 +10,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 @EnableWebSecurity
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
+    @Autowired
+    private AccessDecisionManager accessAffirmativeBased;
+
+    @Autowired
+    private AccessDecisionManager accessUnanimousBased;
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -30,6 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+                //.accessDecisionManager(accessAffirmativeBased)
+                .accessDecisionManager(accessUnanimousBased)
             .antMatchers("/company/**", "/user/**").authenticated()
             .antMatchers("/info").permitAll()
             .antMatchers("/**").denyAll()
