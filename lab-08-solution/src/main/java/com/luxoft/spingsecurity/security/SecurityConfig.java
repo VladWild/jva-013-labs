@@ -35,8 +35,9 @@ public class SecurityConfig {
                         sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/company/**", "/user/**").authenticated()
-                                .requestMatchers("/info").permitAll()
+                                .requestMatchers("/info").hasAnyRole("ADMIN", "MANAGER", "USER")
+                                .requestMatchers("/company/**").hasAnyRole("ADMIN", "MANAGER")
+                                .requestMatchers("/user/**").hasAnyRole("ADMIN")
                                 .requestMatchers("/**").denyAll()
                 )
                 .httpBasic(withDefaults())
