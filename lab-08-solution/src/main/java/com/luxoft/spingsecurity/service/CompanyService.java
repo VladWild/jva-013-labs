@@ -6,6 +6,7 @@ import com.luxoft.spingsecurity.repository.CompanyRepository;
 import com.luxoft.spingsecurity.repository.OrderRepository;
 import com.luxoft.spingsecurity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,12 +32,14 @@ public class CompanyService {
         return user.getCompanies();
     }
 
+    @Secured("ADMIN")
     @Transactional(readOnly = true)
     public Company getById(long companyId) {
         return companyRepository.findById(companyId)
                 .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
     }
 
+    @Secured("ADMIN")
     @Transactional
     public Company createCompany(Company company, long userId) {
         var user = userRepository.findById(userId)
