@@ -5,6 +5,7 @@ import com.luxoft.spingsecurity.dto.converters.UserDtoConverter;
 import com.luxoft.spingsecurity.model.User;
 import com.luxoft.spingsecurity.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -50,5 +52,16 @@ public class UserController {
         var user = userDtoConverter.toDomain(userDto);
         User userUpdate = userService.update(user);
         return userDtoConverter.toDto(userUpdate);
+    }
+
+    @GetMapping("/user/list")
+    public List<UserDto> getPreFilterUsers() {
+        List<User> users = userService.getAll();
+        log.info("Users before service method: {}", users);
+        List<User> usersFilters = userService.getUsersAuthenticationList(users);
+        log.info("Users after service method: {}", users);
+        return usersFilters.stream()
+                .map(userDtoConverter::toDto)
+                .toList();
     }
 }

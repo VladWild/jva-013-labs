@@ -74,4 +74,11 @@ public class User {
     public void setCompanies(List<Company> companies) {
         this.companies = companies;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                '}';
+    }
 }

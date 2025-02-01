@@ -3,12 +3,15 @@ package com.luxoft.spingsecurity.service;
 import com.luxoft.spingsecurity.model.User;
 import com.luxoft.spingsecurity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -40,5 +43,11 @@ public class UserService {
         userDataBase.setPassword(user.getPassword());
         userDataBase.setRoles(user.getRoles());
         return userRepository.save(userDataBase);
+    }
+
+    @PreFilter("filterObject.login == authentication.name")
+    public List<User> getUsersAuthenticationList(List<User> users) {
+        log.info("Users in method: {}", users);
+        return users;
     }
 }
