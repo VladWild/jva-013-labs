@@ -3,6 +3,7 @@ package com.luxoft.spingsecurity.service;
 import com.luxoft.spingsecurity.model.User;
 import com.luxoft.spingsecurity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     @Transactional(readOnly = true)
     public List<User> getAll() {
         return userRepository.findAll();
