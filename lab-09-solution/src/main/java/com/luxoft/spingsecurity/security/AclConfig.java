@@ -33,13 +33,25 @@ public class AclConfig {
 
     @Bean
     public MutableAclService mutableAclService(CacheManager cacheManager) {
+        // Стратегия авторизации в ACL определяет, кто и как может изменять ACL глобально
+        // В данной ситуации полные права предоставляются пользователям с правом ROLE_ADMIN
         var aclAuthorizationStrategy = new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        // Логгер аудита (обычный System.out.println(..))
         var auditLogger = new ConsoleAuditLogger();
+
+        // Дефолтная стратегия авторизации
         var permissionGrantingStrategy = new DefaultPermissionGrantingStrategy(auditLogger);
+
+        // Кэш ACL
         var aclCache = new SpringCacheBasedAclCache(cacheManager.getCache("security/acl"),
                 permissionGrantingStrategy, aclAuthorizationStrategy);
+
+        // Стратегия поиска ACL
         var lookupStrategy = new BasicLookupStrategy(dataSource, aclCache,
                 aclAuthorizationStrategy, permissionGrantingStrategy);
+
+        // Собственно ACL-сервис
         return new JdbcMutableAclService(dataSource, lookupStrategy, aclCache);
     }
 }
