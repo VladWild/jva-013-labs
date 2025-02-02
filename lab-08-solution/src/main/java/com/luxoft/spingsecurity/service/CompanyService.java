@@ -32,14 +32,14 @@ public class CompanyService {
         return user.getCompanies();
     }
 
-    @Secured("ADMIN")
+    @Secured("ROLE_ADMIN")
     @Transactional(readOnly = true)
     public Company getById(long companyId) {
         return companyRepository.findById(companyId)
                 .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
     }
 
-    @Secured("ADMIN")
+    @Secured("ROLE_ADMIN")
     @Transactional
     public Company createCompany(Company company, long userId) {
         var user = userRepository.findById(userId)
