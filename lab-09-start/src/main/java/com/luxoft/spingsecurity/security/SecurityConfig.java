@@ -36,7 +36,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("/info", "/company/**", "/user/**").authenticated()
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/**").denyAll()
                 )
                 .httpBasic(withDefaults())

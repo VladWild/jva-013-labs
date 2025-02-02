@@ -18,6 +18,7 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    private final AclService aclService;
 
     @Transactional(readOnly = true)
     public List<Company> getAll() {
@@ -44,6 +45,7 @@ public class CompanyService {
         var companySave = companyRepository.save(company);
         user.getCompanies().add(company);
         userRepository.save(user);
+        aclService.createAcl(companySave);
         return companySave;
     }
 
