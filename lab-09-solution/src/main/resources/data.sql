@@ -102,25 +102,22 @@ ALTER TABLE acl_object_identity
 
 -- ACLs data
 
-
-INSERT INTO acl_sid (id, principal, sid)
-VALUES (1, 1, 'user1'),
-       (2, 1, 'user2'),
-       (3, 0, 'ROLE_ADMIN');
-
 INSERT INTO acl_class (id, class)
 VALUES (1, 'com.luxoft.spingsecurity.model.Company');
 
+INSERT INTO acl_sid (id, principal, sid)
+VALUES (-100, 1, 'user1'),
+       (-200, 1, 'user2'),
+       (-300, 0, 'ROLE_ADMIN');
+
 INSERT INTO acl_object_identity (id, object_id_class, object_id_identity, parent_object, owner_sid, entries_inheriting)
-VALUES (1, 1, 1001, NULL, 3, 0),
-       (2, 1, 1002, NULL, 3, 0),
-       (3, 1, 1003, NULL, 3, 0);
+VALUES (1, 1, 1001, NULL, -300, 0),
+       (2, 1, 1002, NULL, -300, 0),
+       (3, 1, 1003, NULL, -300, 0);
 
 INSERT INTO acl_entry (id, acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure)
-VALUES (1, 1, 1, 1, 1, 1, 1, 1),
-       (2, 1, 2, 1, 2, 1, 1, 1),
-       (3, 1, 3, 3, 1, 1, 1, 1),
-       (4, 2, 1, 2, 1, 1, 1, 1),
-       (5, 2, 2, 3, 1, 1, 1, 1),
-       (6, 3, 1, 3, 1, 1, 1, 1),
-       (7, 3, 2, 3, 2, 1, 1, 1);
+VALUES (1, 1, 1, -100, 1, 1, 1, 1),
+       (2, 1, 3, -300, 1, 1, 1, 1),
+       (3, 2, 1, -200, 1, 1, 1, 1),
+       (4, 2, 2, -300, 1, 1, 1, 1),
+       (5, 3, 1, -300, 1, 1, 1, 1);

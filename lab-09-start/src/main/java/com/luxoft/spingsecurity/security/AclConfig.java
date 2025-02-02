@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.support.SimpleCacheManager;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.acls.AclPermissionEvaluator;
 import org.springframework.security.acls.domain.AclAuthorizationStrategyImpl;
 import org.springframework.security.acls.domain.ConsoleAuditLogger;
+import org.springframework.security.acls.domain.DefaultPermissionFactory;
 import org.springframework.security.acls.domain.DefaultPermissionGrantingStrategy;
 import org.springframework.security.acls.domain.SpringCacheBasedAclCache;
 import org.springframework.security.acls.jdbc.BasicLookupStrategy;
@@ -41,5 +45,27 @@ public class AclConfig {
         var lookupStrategy = new BasicLookupStrategy(dataSource, aclCache,
                 aclAuthorizationStrategy, permissionGrantingStrategy);
         return new JdbcMutableAclService(dataSource, lookupStrategy, aclCache);
+    }
+
+    @Bean
+    public DefaultPermissionFactory permissionFactory() {
+        return new DefaultPermissionFactory();
+    }
+
+    @Bean
+    public AclPermissionEvaluator permissionEvaluator(MutableAclService aclService,
+                                                      DefaultPermissionFactory permissionFactory) {
+        AclPermissionEvaluator aclPermissionEvaluator = new AclPermissionEvaluator(aclService);
+        aclPermissionEvaluator.setPermissionFactory(permissionFactory);
+        return aclPermissionEvaluator;
+    }
+
+    @Bean
+    public DefaultMethodSecurityExpressionHandler methodSecurityExpressionHandler(AclPermissionEvaluator permissionEvaluator,
+                                                                                  ApplicationContext applicationContext) {
+        var defaultHttpSecurityExpressionHandler = new DefaultMethodSecurityExpressionHandler();
+        defaultHttpSecurityExpressionHandler.setPermissionEvaluator(permissionEvaluator);
+        defaultHttpSecurityExpressionHandler.setApplicationContext(applicationContext);
+        return defaultHttpSecurityExpressionHandler;
     }
 }
