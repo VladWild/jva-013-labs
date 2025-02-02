@@ -38,7 +38,7 @@ public class CompanyService {
                 .orElseThrow(() -> new IllegalArgumentException("Company does not exist"));
     }
 
-    @Secured("ADMIN")
+    @Secured("ROLE_ADMIN")
     @Transactional
     public Company createCompany(Company company, long userId) {
         var user = userRepository.findById(userId)
