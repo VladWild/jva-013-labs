@@ -1,3 +1,0 @@
-# to generate a pair public/private keys, use this command:
-keytool -genkeypair -alias jwt -keyalg RSA -keypass mySecretKey -keystore jwt.jks -storepass mySecretKey
-
