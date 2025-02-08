@@ -1,0 +1,18 @@
+version: "3.6"
+networks:
+  keycloak_net:
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1
+    hostname: keycloak
+    # запуск Keycloak в режиме разработки
+    command:
+      - start-dev
+    networks:
+      - keycloak_net
+    ports:
+      - 18080:8080
+    environment:
+      # user и password для входа в Keycloak у нас будут admin
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
