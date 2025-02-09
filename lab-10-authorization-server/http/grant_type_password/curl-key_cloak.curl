@@ -1,0 +1,9 @@
+### POST for key_cloak authentication
+
+curl -v -X POST -H 'Content-Type: application/x-www-form-urlencoded' -d\
+'client_id=springsecurity'\
+'&client_secret=aSABCBNHeAeaSbPqUIvnNThGMWKfCD9y'\
+'&username=user1'\
+'&password=password'\
+'&grant_type=password' \
+'http://localhost:18080/realms/application/protocol/openid-connect/token' | json_pp
